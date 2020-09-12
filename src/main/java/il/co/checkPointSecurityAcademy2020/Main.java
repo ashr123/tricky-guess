@@ -26,8 +26,7 @@ public class Main
 
 		startTime = System.nanoTime();
 		final boolean collect = isUniqueCharsInCollection(ref.wordList);
-		System.out.println("Checked list in " + ((System.nanoTime() - startTime) / 1e9) + " seconds");
-		System.out.println(collect + "\n");
+		System.out.println("Checked list in " + ((System.nanoTime() - startTime) / 1e9) + " seconds\n" + collect + "\n");
 
 
 		try (Scanner scanner = new Scanner(System.in))
