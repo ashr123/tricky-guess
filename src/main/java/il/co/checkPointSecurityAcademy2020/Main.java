@@ -20,7 +20,7 @@ public class Main
 		long startTime = System.nanoTime();
 		final var ref = new Object()
 		{
-			List<String> wordList = Files.readAllLines(Path.of(Objects.requireNonNull(Main.class.getClassLoader().getResource("words.txt")).getPath()));
+			private List<String> wordList = Files.readAllLines(Path.of(Objects.requireNonNull(Main.class.getClassLoader().getResource("words.txt")).getPath()));
 		};
 		System.out.println("Read file in " + ((System.nanoTime() - startTime) / 1e9) + " seconds");
 
@@ -32,17 +32,15 @@ public class Main
 
 		try (Scanner scanner = new Scanner(System.in))
 		{
-			for (int i = 0, num = 3; i < 15; i++)
+			for (int i = 0, num; i < 15; i++)
 			{
-				if (ref.wordList.size() == 0)
-					return;
 				System.out.print("Chosen word: " + ref.wordList.get(0) +
 				                 "\nEnter number of characters you were correct with: ");
-				num = scanner.nextByte();
+				num = scanner.nextInt();
 				if (num == -1)
 					return;
-				startTime = System.nanoTime();
 				final int finalNum = num;
+				startTime = System.nanoTime();
 				ref.wordList = ref.wordList.parallelStream()
 						.filter(word -> word.chars()
 								                .filter(ch -> ref.wordList.get(0).indexOf(ch) != -1)
@@ -50,6 +48,8 @@ public class Main
 						.collect(Collectors.toList());
 				System.out.println("getPerms() computed in " + ((System.nanoTime() - startTime) / 1e9) + " seconds." +
 				                   "\nList size: " + ref.wordList.size());
+				if (ref.wordList.size() == 0)
+					return;
 			}
 		}
 
